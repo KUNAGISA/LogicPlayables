@@ -18,7 +18,7 @@
         /// <summary>
         /// 初始化逻辑帧
         /// </summary>
-        void InitFrame(T owner, float start, float end);
+        internal void InitFrame(T owner, float start, float end);
 
         /// <summary>
         /// 执行逻辑帧

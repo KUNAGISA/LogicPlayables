@@ -20,11 +20,13 @@
             OnInitFrame();
         }
 
+        void ILogicFrame<T>.ExcuteFrame(float delta) => OnExcuteFrame(delta);
+
         /// <summary>
         /// 初始化逻辑帧
         /// </summary>
         protected abstract void OnInitFrame();
 
-        public abstract void ExcuteFrame(float delta);
+        protected abstract void OnExcuteFrame(float delta);
     }
 }
