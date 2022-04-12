@@ -1,0 +1,10 @@
+﻿{
+    "name": "com.kunagisa.logicplayables",
+    "displayName": "LogicPlayables",
+    "description": "Timeline扩展创建逻辑帧，让逻辑对象跟表现分离",
+    "version": "1.0.0",
+    "author":{
+        "name": "零",
+        "email": "kunagisatomo@live.com"
+    }
+}
