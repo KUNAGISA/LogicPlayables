@@ -6,10 +6,8 @@
     public interface ILogicPlayableAsset<in T>
     {
         /// <summary>
-        /// 创建逻辑帧
+        /// 创建逻辑帧，建议在初次创建后一直使用同一个对象
         /// </summary>
-        /// <param name="start">开始时间</param>
-        /// <param name="end">结束时间</param>
-        ILogicFrame<T> CreateLogicFrame(T owner, float start, float end);
+        ILogicFrame<T> CreateLogicFrame();
     }
 }
