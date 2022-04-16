@@ -9,6 +9,8 @@
         private float m_runtime;
         private FrameData<T>[] m_frames;
 
+        public float Runtime => m_runtime;
+
         public LogicFramePlayer(T owner)
         {
             m_owner = owner;
