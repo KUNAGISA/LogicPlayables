@@ -3,11 +3,11 @@
     /// <summary>
     /// 逻辑帧Player
     /// </summary>
-    public struct LogicFramePlayer<T>
+    public class LogicFramePlayer<T>
     {
-        private T m_owner;
-        private float m_runtime;
-        private FrameData<T>[] m_frames;
+        private T m_owner = default(T);
+        private float m_runtime = 0.0f;
+        private FrameData<T>[] m_frames = null;
 
         public float Runtime => m_runtime;
 

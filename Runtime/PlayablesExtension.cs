@@ -60,7 +60,7 @@ namespace LogicPlayables
         /// <param name="outputFrames">输出的逻辑帧列表（没有排序）</param>
         public static void CreateLogicFrames<T>(this TimelineAsset asset, in List<FrameData<T>> outputFrames)
         {
-            for (var index = 0; index <= asset.outputTrackCount; ++index)
+            for (var index = 0; index < asset.outputTrackCount; ++index)
             {
                 asset.GetRootTrack(index).CreateLogicFrames(outputFrames);
             }
