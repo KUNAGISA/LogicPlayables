@@ -1,11 +1,17 @@
-﻿namespace LogicPlayables
+﻿using UnityEngine;
+
+namespace LogicPlayables
 {
     /// <summary>
     /// 逻辑帧Player
     /// </summary>
+    [System.Serializable]
     public class LogicFramePlayer
     {
+        [SerializeField]
         private float m_runtime = 0.0f;
+
+        [SerializeReference]
         private ILogicFrame[] m_frames = null;
 
         public float Runtime => m_runtime;
