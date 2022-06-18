@@ -6,63 +6,27 @@ namespace LogicPlayables
     public static class LogicPlayablesExtension
     {
         /// <summary>
-        /// 逻辑帧根据时间排序排序
-        /// </summary>
-        public static void SortByTime<T>(this List<FrameData<T>> logicFrames)
-        {
-            logicFrames.Sort((frameA, frameB) =>
-            {
-                ref readonly var intervalA = ref frameA.interval;
-                ref readonly var intervalB = ref frameB.interval;
-
-                if (intervalA.start != intervalB.start)
-                {
-                    return intervalA.start < intervalB.start ? -1 : 1;
-                }
-
-                if (intervalA.end != intervalB.end)
-                {
-                    return intervalA.end < intervalB.end ? -1 : 1;
-                }
-
-                return -1;
-            });
-        }
-
-        /// <summary>
         /// 创建逻辑帧列表
         /// </summary>
-        /// <param name="asset">轨道资源</param>
+        /// <param name="trackAsset">轨道资源</param>
         /// <param name="outputFrames">输出逻辑帧</param>
-        public static void CreateLogicFrames<T>(this TrackAsset asset, in List<FrameData<T>> outputFrames)
+        public static void CreateLogicFrames<T>(this TrackAsset trackAsset, T ctrlObj, List<ILogicFrame> outputFrames) where T : class
         {
-            var interval = new FrameInterval((float)asset.start, (float)asset.end);
-            foreach (var clip in asset.GetClips())
+            float start = (float)trackAsset.start, end = (float)trackAsset.end;
+            foreach (var clip in trackAsset.GetClips())
             {
-                if (clip.asset is ILogicPlayableAsset<T>)
+                var playableAsset = clip.asset as ILogicPlayableAsset<T>;
+                if (playableAsset != null)
                 {
-                    var logicFrame = (clip.asset as ILogicPlayableAsset<T>)?.CreateLogicFrame();
-                    outputFrames.Add(new FrameData<T>(interval, logicFrame));
+                    var logicFrame = playableAsset.CreateLogicFrame(ctrlObj);
+                    logicFrame.SetInterval(start, end);
+                    outputFrames.Add(logicFrame);
                 }
             }
 
-            foreach(var child in asset.GetChildTracks())
+            foreach(var child in trackAsset.GetChildTracks())
             {
-                child.CreateLogicFrames<T>(outputFrames);
-            }
-        }
-
-        /// <summary>
-        /// 创建逻辑帧列表
-        /// </summary>
-        /// <param name="asset">Timeline资源</param>
-        /// <param name="owner">持有者</param>
-        /// <param name="outputFrames">输出的逻辑帧列表（没有排序）</param>
-        public static void CreateLogicFrames<T>(this TimelineAsset asset, in List<FrameData<T>> outputFrames)
-        {
-            for (var index = 0; index < asset.outputTrackCount; ++index)
-            {
-                asset.GetRootTrack(index).CreateLogicFrames(outputFrames);
+                child.CreateLogicFrames<T>(ctrlObj, outputFrames);
             }
         }
     }

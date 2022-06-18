@@ -3,33 +3,25 @@
     /// <summary>
     /// 逻辑帧Player
     /// </summary>
-    public class LogicFramePlayer<T>
+    public class LogicFramePlayer
     {
-        private T m_owner = default(T);
         private float m_runtime = 0.0f;
-        private FrameData<T>[] m_frames = null;
+        private ILogicFrame[] m_frames = null;
 
         public float Runtime => m_runtime;
-
-        public LogicFramePlayer(T owner)
-        {
-            m_owner = owner;
-            m_runtime = 0.0f;
-            m_frames = null;
-        }
 
         /// <summary>
         /// 运行新的逻辑帧
         /// </summary>
         /// <param name="frames">逻辑帧列表</param>
-        public void Play(FrameData<T>[] frames)
+        public void Play(ILogicFrame[] frames)
         {
             Clear();
             m_frames = frames;
 
             for (var index = 0; index < frames.Length; ++index)
             {
-                frames[index].logic.InitFrame(m_owner);
+                frames[index].InitFrame();
             }
         }
 
@@ -42,7 +34,7 @@
             {
                 for (var index = 0; index < m_frames.Length; ++index)
                 {
-                    m_frames[index].logic.DestroyFrame(m_owner);
+                    m_frames[index].DestroyFrame();
                 }
                 m_frames = null;
             }
@@ -65,15 +57,14 @@
 
             for(var index = 0; index < m_frames.Length; ++index)
             {
-                ref var frame = ref m_frames[index];
-                ref readonly var interval = ref frame.interval;
-                if (interval.start <= m_runtime && interval.end > m_runtime)
+                var frame = m_frames[index];
+                if (frame.start <= m_runtime && frame.end > m_runtime)
                 {
-                    frame.logic.ExcuteFrame(m_owner, m_runtime - interval.start, in interval);
+                    frame.ExecuteFrame(m_runtime - frame.start);
                 }
-                else if (interval.start <= lasttime && interval.end > lasttime && interval.end <= m_runtime)
+                else if (frame.start <= lasttime && frame.end > lasttime && frame.end <= m_runtime)
                 {
-                    frame.logic.FinishFrame(m_owner, in interval);
+                    frame.FinishFrame();
                 }
             }
         }
