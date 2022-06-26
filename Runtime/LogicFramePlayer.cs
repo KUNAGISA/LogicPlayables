@@ -9,12 +9,15 @@ namespace LogicPlayables
     public class LogicFramePlayer
     {
         [SerializeField]
-        private float m_runtime = 0.0f;
+        private uint m_runtime = 0;
 
         [SerializeReference]
         private ILogicFrame[] m_frames = null;
 
-        public float Runtime => m_runtime;
+        /// <summary>
+        /// <see cref="Play(ILogicFrame[])"/>后执行的时间(毫秒)
+        /// </summary>
+        public float runtime => m_runtime;
 
         /// <summary>
         /// 运行新的逻辑帧
@@ -44,14 +47,14 @@ namespace LogicPlayables
                 }
                 m_frames = null;
             }
-            m_runtime = 0.0f;
+            m_runtime = 0;
         }
 
         /// <summary>
         /// 逻辑帧更新
         /// </summary>
-        /// <param name="delta">时间差</param>
-        public void Update(float delta)
+        /// <param name="delta">时间差(毫秒)</param>
+        public void Update(uint delta)
         {
             if (m_frames == null)
             {

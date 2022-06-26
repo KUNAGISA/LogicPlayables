@@ -1,26 +1,28 @@
-﻿namespace LogicPlayables
+﻿using System;
+
+namespace LogicPlayables
 {
     /// <summary>
     /// 逻辑帧接口
     /// </summary>
-    public interface ILogicFrame
+    public interface ILogicFrame : IComparable<ILogicFrame>
     {
         /// <summary>
         /// 逻辑帧开始时间
         /// </summary>
-        float start { get; }
+        uint start { get; }
 
         /// <summary>
         /// 逻辑帧结束时间
         /// </summary>
-        float end { get; }
+        uint end { get; }
 
         /// <summary>
         /// 设置逻辑帧间隔
         /// </summary>
         /// <param name="start">开始时间</param>
         /// <param name="end">结束时间</param>
-        void SetInterval(float start, float end);
+        void SetInterval(uint start, uint end);
 
         /// <summary>
         /// 所有数据准备好后调用，初始化逻辑帧
@@ -35,43 +37,13 @@
         /// <summary>
         /// 执行逻辑帧
         /// </summary>
-        /// <param name="pass">经过的时间</param>
-        void ExecuteFrame(float pass);
+        /// <param name="pass">经过的时间(毫秒)</param>
+        void ExecuteFrame(uint pass);
 
         /// <summary>
         /// 逻辑帧完成
         /// </summary>
         void FinishFrame();
-
-        public static bool operator < (ILogicFrame frameA, ILogicFrame frameB)
-        {
-            if (frameA.start != frameB.start)
-            {
-                return frameA.start < frameB.start;
-            }
-
-            if (frameA.end != frameB.end)
-            {
-                return frameA.end < frameB.end;
-            }
-
-            return false;
-        }
-
-        public static bool operator > (ILogicFrame frameA, ILogicFrame frameB)
-        {
-            if (frameA.start != frameB.start)
-            {
-                return frameA.start > frameB.start;
-            }
-
-            if (frameA.end != frameB.end)
-            {
-                return frameA.end > frameB.end;
-            }
-
-            return false;
-        }
     }
 
     /// <summary>

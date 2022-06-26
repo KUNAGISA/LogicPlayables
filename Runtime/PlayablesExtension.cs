@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using UnityEngine.Timeline;
 
 namespace LogicPlayables
@@ -12,7 +13,7 @@ namespace LogicPlayables
         /// <param name="outputFrames">输出逻辑帧</param>
         public static void CreateLogicFrames<T>(this TrackAsset trackAsset, T ctrlObj, List<ILogicFrame> outputFrames) where T : class
         {
-            float start = (float)trackAsset.start, end = (float)trackAsset.end;
+            uint start = (uint)Math.Floor(trackAsset.start * 1000), end = (uint)Math.Floor(trackAsset.end * 1000);
             foreach (var clip in trackAsset.GetClips())
             {
                 var playableAsset = clip.asset as ILogicPlayableAsset<T>;
@@ -26,7 +27,7 @@ namespace LogicPlayables
 
             foreach(var child in trackAsset.GetChildTracks())
             {
-                child.CreateLogicFrames<T>(ctrlObj, outputFrames);
+                child.CreateLogicFrames(ctrlObj, outputFrames);
             }
         }
     }
